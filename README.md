@@ -1,6 +1,6 @@
 # Similigo
 
-A Go client library to calculate similarity between to strings
+A Go client library to calculate similarity between two strings
 
 <img src="https://img.shields.io/github/go-mod/go-version/Ojelaidi/similigo">
 

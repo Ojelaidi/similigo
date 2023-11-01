@@ -144,7 +144,21 @@ func containmentSimilarity(text1, text2 string) float64 {
 	return matchCount
 }
 
-func HybridSimilarity(text1, text2 string, n int, wordSimWeight, ngramSimWeight, containmentSimWeight float64) float64 {
+// CalculateHybridSimilarity calculates a hybrid similarity score between two text strings.
+// It combines different similarity measures (word similarity, n-gram similarity, and containment similarity)
+// with custom weightings to provide an overall similarity score between the two texts.
+//
+// Parameters:
+// - text1: The first text string for comparison.
+// - text2: The second text string for comparison.
+// - n: The n-gram size used for n-gram similarity calculation.
+// - wordSimWeight: Weight for word similarity in the final score.
+// - ngramSimWeight: Weight for n-gram similarity in the final score.
+// - containmentSimWeight: Weight for containment similarity in the final score.
+//
+// Returns:
+// The hybrid similarity score, which is a weighted combination of the three similarity measures.
+func CalculateHybridSimilarity(text1, text2 string, n int, wordSimWeight, ngramSimWeight, containmentSimWeight float64) float64 {
 	wordSim := cosineSimilarity(text1, text2)
 	ngramSim := ngramCosineSimilarity(text1, text2, n)
 	containmentSim := containmentSimilarity(text1, text2)
