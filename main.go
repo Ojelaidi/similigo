@@ -5,6 +5,25 @@ import (
 	"strings"
 )
 
+// SimilarityOptions represents optional settings for hybrid similarity calculation.
+// - NgramSize: The n-gram size used for n-gram similarity calculation.
+// - WordSimWeight: Weight for word similarity in the final score.
+// - NgramSimWeight: Weight for n-gram similarity in the final score.
+// - ContainmentSimWeight: Weight for containment similarity in the final score.
+type SimilarityOptions struct {
+	NgramSize            int
+	WordSimWeight        float64
+	NgramSimWeight       float64
+	ContainmentSimWeight float64
+}
+
+const (
+	DefaultNgramSize            = 3
+	DefaultWordSimWeight        = 0.5
+	DefaultNgramSimWeight       = 0.3
+	DefaultContainmentSimWeight = 0.2
+)
+
 func getFrequencyMap(text string) map[string]int {
 	freqMap := make(map[string]int)
 	tokens := strings.Fields(strings.ToLower(text))
@@ -151,17 +170,39 @@ func containmentSimilarity(text1, text2 string) float64 {
 // Parameters:
 // - text1: The first text string for comparison.
 // - text2: The second text string for comparison.
-// - n: The n-gram size used for n-gram similarity calculation.
-// - wordSimWeight: Weight for word similarity in the final score.
-// - ngramSimWeight: Weight for n-gram similarity in the final score.
-// - containmentSimWeight: Weight for containment similarity in the final score.
+// - options: An optional struct that allows customization of n-gram size and weights.
 //
 // Returns:
 // The hybrid similarity score, which is a weighted combination of the three similarity measures.
-func CalculateHybridSimilarity(text1, text2 string, n int, wordSimWeight, ngramSimWeight, containmentSimWeight float64) float64 {
+func CalculateHybridSimilarity(text1, text2 string, options *SimilarityOptions) float64 {
+	if options == nil {
+		options = &SimilarityOptions{
+			NgramSize:            DefaultNgramSize,
+			WordSimWeight:        DefaultWordSimWeight,
+			NgramSimWeight:       DefaultNgramSimWeight,
+			ContainmentSimWeight: DefaultContainmentSimWeight,
+		}
+	}
+
+	if options.NgramSize == 0 {
+		options.NgramSize = DefaultNgramSize
+	}
+
+	if options.WordSimWeight == 0.0 {
+		options.WordSimWeight = DefaultWordSimWeight
+	}
+
+	if options.NgramSimWeight == 0.0 {
+		options.NgramSimWeight = DefaultNgramSimWeight
+	}
+
+	if options.ContainmentSimWeight == 0.0 {
+		options.ContainmentSimWeight = DefaultContainmentSimWeight
+	}
+
 	wordSim := cosineSimilarity(text1, text2)
-	ngramSim := ngramCosineSimilarity(text1, text2, n)
+	ngramSim := ngramCosineSimilarity(text1, text2, options.NgramSize)
 	containmentSim := containmentSimilarity(text1, text2)
 
-	return wordSimWeight*wordSim + ngramSimWeight*ngramSim + containmentSimWeight*containmentSim
+	return options.WordSimWeight*wordSim + options.NgramSimWeight*ngramSim + options.ContainmentSimWeight*containmentSim
 }
