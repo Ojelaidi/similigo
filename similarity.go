@@ -25,3 +25,20 @@ func CalculateHybridSimilarity(text1, text2 string, opts ...Option) float64 {
 
 	return options.WordSimWeight*wordSim + options.NgramSimWeight*ngramSim + options.ContainmentSimWeight*containmentSim
 }
+
+// FindBestMatchInList takes a target text and a slice of texts, calculates the similarity for each,
+// and returns the text with the highest similarity score.
+func FindBestMatchInList(targetText string, texts []string, opts ...Option) (bestMatch string, highestScore float64) {
+	highestScore = -1
+	bestMatch = ""
+
+	for _, text := range texts {
+		score := CalculateHybridSimilarity(targetText, text, opts...)
+		if score > highestScore {
+			highestScore = score
+			bestMatch = text
+		}
+	}
+
+	return bestMatch, highestScore
+}
