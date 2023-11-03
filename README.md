@@ -18,15 +18,16 @@ package main
 import "github.com/Ojelaidi/similigo"
 
 func main() {
-	options := similigo.SimilarityOptions{
-		NgramSize:         3,
-		WordSimWeight:     0.5,
-		NgramSimWeight:    0.3,
-		ContainmentWeight: 0.2,
-	}
-
-	result := similigo.CalculateHybridSimilarity("text1", "text2", &options)
-	fmt.Printf("Similarity Score: %.2f\n", result)
+	
+	similarityScore := similigo.CalculateHybridSimilarity(
+		text1,
+		text2,
+		WithNgramSize(4),
+		WithWordSimWeight(0.4),
+		WithNgramSimWeight(0.4),
+		WithContainmentSimWeight(0.2),
+	)
+	fmt.Printf("Similarity Score: %.2f\n", similarityScore)
 }
 
 ```
