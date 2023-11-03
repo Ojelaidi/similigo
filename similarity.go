@@ -9,7 +9,7 @@ import "github.com/Ojelaidi/similigo/similarity"
 // Parameters:
 // - text1: The first text string for comparison.
 // - text2: The second text string for comparison.
-// - options: An optional struct that allows customization of n-gram size and weights.
+// - opts: An optional variadic parameter that allows customization of n-gram size and weights
 //
 // Returns:
 // The hybrid similarity score, which is a weighted combination of the three similarity measures.
