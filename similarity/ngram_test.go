@@ -17,7 +17,7 @@ func TestNgramCosineSimilarity(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run("Ngram_"+tt.text1+"_"+tt.text2, func(t *testing.T) {
-			if gotSim := ngramCosineSimilarity(tt.text1, tt.text2, tt.n); gotSim != tt.wantSim {
+			if gotSim := NgramCosineSimilarity(tt.text1, tt.text2, tt.n); gotSim != tt.wantSim {
 				t.Errorf("ngramCosineSimilarity() = %v, want %v", gotSim, tt.wantSim)
 			}
 		})

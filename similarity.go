@@ -1,6 +1,6 @@
-package similarity
+package similigo
 
-import "github.com/Ojelaidi/similigo"
+import "github.com/Ojelaidi/similigo/similarity"
 
 // CalculateHybridSimilarity calculates a hybrid similarity score between two text strings.
 // It combines different similarity measures (word similarity, n-gram similarity, and containment similarity)
@@ -13,15 +13,15 @@ import "github.com/Ojelaidi/similigo"
 //
 // Returns:
 // The hybrid similarity score, which is a weighted combination of the three similarity measures.
-func CalculateHybridSimilarity(text1, text2 string, opts ...similigo.Option) float64 {
-	options := similigo.DefaultSimilarityOptions()
+func CalculateHybridSimilarity(text1, text2 string, opts ...Option) float64 {
+	options := DefaultSimilarityOptions()
 	for _, opt := range opts {
 		opt(options)
 	}
 
-	wordSim := cosineSimilarity(text1, text2)
-	ngramSim := ngramCosineSimilarity(text1, text2, options.NgramSize)
-	containmentSim := containmentSimilarity(text1, text2)
+	wordSim := similarity.CosineSimilarity(text1, text2)
+	ngramSim := similarity.NgramCosineSimilarity(text1, text2, options.NgramSize)
+	containmentSim := similarity.ContainmentSimilarity(text1, text2)
 
 	return options.WordSimWeight*wordSim + options.NgramSimWeight*ngramSim + options.ContainmentSimWeight*containmentSim
 }

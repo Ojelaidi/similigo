@@ -11,7 +11,7 @@ func getNgramFrequencyMap(text string, n int) map[string]int {
 	}
 	return freqMap
 }
-func ngramCosineSimilarity(text1, text2 string, n int) float64 {
+func NgramCosineSimilarity(text1, text2 string, n int) float64 {
 	freqMap1 := getNgramFrequencyMap(text1, n)
 	freqMap2 := getNgramFrequencyMap(text2, n)
 

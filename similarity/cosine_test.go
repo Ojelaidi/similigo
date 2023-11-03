@@ -18,7 +18,7 @@ func TestCosineSimilarity(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.text1+"_"+tt.text2, func(t *testing.T) {
-			if gotSim := cosineSimilarity(tt.text1, tt.text2); gotSim != tt.wantSim {
+			if gotSim := CosineSimilarity(tt.text1, tt.text2); gotSim != tt.wantSim {
 				t.Errorf("cosineSimilarity() = %v, want %v", gotSim, tt.wantSim)
 			}
 		})

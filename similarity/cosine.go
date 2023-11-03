@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func cosineSimilarity(text1, text2 string) float64 {
+func CosineSimilarity(text1, text2 string) float64 {
 	freqMap1 := utils.GetFrequencyMap(text1)
 	freqMap2 := utils.GetFrequencyMap(text2)
 

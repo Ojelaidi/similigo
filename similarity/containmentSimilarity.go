@@ -2,7 +2,7 @@ package similarity
 
 import "strings"
 
-func containmentSimilarity(text1, text2 string) float64 {
+func ContainmentSimilarity(text1, text2 string) float64 {
 	keywordTokens := strings.Fields(strings.ToLower(text1))
 	titleTokens := strings.Fields(strings.ToLower(text2))
 

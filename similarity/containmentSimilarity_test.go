@@ -21,7 +21,7 @@ func TestContainmentSimilarity(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run("Containment_"+tt.text1+"_"+tt.text2, func(t *testing.T) {
-			got := containmentSimilarity(tt.text1, tt.text2)
+			got := ContainmentSimilarity(tt.text1, tt.text2)
 			if got != tt.expected {
 				t.Errorf("containmentSimilarity() = %v, want %v", got, tt.expected)
 			}
