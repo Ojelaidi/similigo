@@ -1,6 +1,7 @@
 package similigo
 
 import (
+	"container/heap"
 	"github.com/Ojelaidi/similigo/similarity"
 	"github.com/Ojelaidi/similigo/utils"
 	"strings"
@@ -65,6 +66,39 @@ func CalculateHybridSimilarity(text1, text2 string, opts ...Option) float64 {
 	containmentSim := similarity.ContainmentSimilarity(preprocessedText1, preprocessedText2)
 
 	return options.WordSimWeight*wordSim + options.NgramSimWeight*ngramSim + options.ContainmentSimWeight*containmentSim
+}
+
+// FindBestNMatchesInList searches through a list of texts to find the top `n` texts that are most similar to a target text.
+// It uses a heap to efficiently keep track of the best matches while iterating through the list.
+//
+// Parameters:
+// - targetText: The text string you want to compare against the list of texts.
+// - texts: A slice of text strings that you want to compare with the target text.
+// - n: The number of top matches you want to find.
+// - opts: Zero or more options that can modify the similarity calculation (such as n-gram size, weights, etc.).
+//
+// Returns:
+// A slice of Match structs, each containing a text from the input list and its similarity score to the target text.
+// The slice is sorted in descending order of similarity scores, with the highest scoring matches first.
+func FindBestNMatchesInList(targetText string, texts []string, n int, opts ...Option) []utils.Match {
+	h := &utils.MatchHeap{}
+	heap.Init(h)
+
+	for _, text := range texts {
+		score := CalculateHybridSimilarity(targetText, text, opts...)
+		heap.Push(h, utils.Match{Text: text, Score: score})
+
+		if h.Len() > n {
+			heap.Pop(h)
+		}
+	}
+
+	bestMatches := make([]utils.Match, h.Len())
+	for i := len(bestMatches) - 1; i >= 0; i-- {
+		bestMatches[i] = heap.Pop(h).(utils.Match)
+	}
+
+	return bestMatches
 }
 
 // FindBestMatchInList takes a target text and a slice of texts, calculates the similarity for each,

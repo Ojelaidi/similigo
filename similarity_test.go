@@ -1,6 +1,10 @@
 package similigo
 
-import "testing"
+import (
+	"github.com/Ojelaidi/similigo/utils"
+	"reflect"
+	"testing"
+)
 
 func TestCalculateHybridSimilarity(t *testing.T) {
 	type args struct {
@@ -54,6 +58,55 @@ func TestCalculateHybridSimilarity(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := CalculateHybridSimilarity(tt.args.text1, tt.args.text2, tt.args.opts...); got != tt.want {
 				t.Errorf("CalculateHybridSimilarity() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestFindBestNMatchesInList(t *testing.T) {
+	type args struct {
+		targetText string
+		texts      []string
+		n          int
+		opts       []Option
+	}
+	tests := []struct {
+		name string
+		args args
+		want []utils.Match
+	}{
+		{
+			name: "top 3 matches from list",
+			args: args{
+				targetText: "hello world",
+				texts:      []string{"hello world", "hello", "world", "hola mundo", "hallo welt"},
+				n:          3,
+				opts:       nil, // No special options
+			},
+			want: []utils.Match{
+				{Text: "hello world", Score: 0.9999999999999998},
+				{Text: "world", Score: 0.7432900502033766},
+				{Text: "hello", Score: 0.7432900502033766},
+			},
+		},
+		{
+			name: "top 2 matches with non-default options",
+			args: args{
+				targetText: "hello world",
+				texts:      []string{"hello world", "hello", "world", "hola mundo", "hallo welt"},
+				n:          2,
+				opts:       []Option{WithNgramSize(3)},
+			},
+			want: []utils.Match{
+				{Text: "hello world", Score: 0.9999999999999998},
+				{Text: "world", Score: 0.7267584713501614},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := FindBestNMatchesInList(tt.args.targetText, tt.args.texts, tt.args.n, tt.args.opts...); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("FindBestNMatchesInList() = %v, want %v", got, tt.want)
 			}
 		})
 	}

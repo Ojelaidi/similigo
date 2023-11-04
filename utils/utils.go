@@ -47,3 +47,28 @@ func StemWord(word string) (string, error) {
 	}
 	return stemmed, nil
 }
+
+// A Match contains the text and its similarity score
+type Match struct {
+	Text  string
+	Score float64
+}
+
+// MatchHeap is a min-heap of Matches.
+type MatchHeap []Match
+
+func (h MatchHeap) Len() int           { return len(h) }
+func (h MatchHeap) Less(i, j int) bool { return h[i].Score < h[j].Score } // Min-heap based on Score
+func (h MatchHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+
+func (h *MatchHeap) Push(x interface{}) {
+	*h = append(*h, x.(Match))
+}
+
+func (h *MatchHeap) Pop() interface{} {
+	old := *h
+	n := len(old)
+	x := old[n-1]
+	*h = old[0 : n-1]
+	return x
+}
