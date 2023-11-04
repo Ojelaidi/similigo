@@ -18,7 +18,7 @@ type SimilarityOptions struct {
 }
 
 const (
-	DefaultNgramSize            = 3
+	DefaultNgramSize            = 2
 	DefaultWordSimWeight        = 0.5
 	DefaultNgramSimWeight       = 0.3
 	DefaultContainmentSimWeight = 0.2

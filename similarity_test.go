@@ -20,16 +20,16 @@ func TestCalculateHybridSimilarity(t *testing.T) {
 				text2: "Bonjour le monde",
 				opts:  nil, // no options, use defaults
 			},
-			want: 0.9999999999999998,
+			want: 1.0,
 		},
 		{
 			name: "Identical strings with 2-gram size",
 			args: args{
 				text1: "Bonjour le monde",
 				text2: "Bonjour le monde",
-				opts:  []Option{WithNgramSize(2)},
+				opts:  []Option{WithNgramSize(3)},
 			},
-			want: 1.0,
+			want: 0.9999999999999998,
 		},
 		{
 			name: "Similar strings with custom stop words - basic test",
@@ -38,7 +38,7 @@ func TestCalculateHybridSimilarity(t *testing.T) {
 				text2: "Salut le monde",
 				opts:  []Option{WithCustomStopWords([]string{"stage", "custom", "test"})},
 			},
-			want: 0.45062305898749044,
+			want: 0.4886750490563072,
 		},
 		{
 			name: "Similar strings with custom stop words - sim score should be 1.0",

@@ -14,16 +14,6 @@ func GetFrequencyMap(text string) map[string]int {
 	return freqMap
 }
 
-func Min(a, b, c int) int {
-	if a < b && a < c {
-		return a
-	}
-	if b < a && b < c {
-		return b
-	}
-	return c
-}
-
 var FrenchStopWords = map[string]bool{
 	"alors": true, "au": true, "aucuns": true, "aussi": true, "autre": true, "avant": true, "avec": true,
 	"avoir": true, "bon": true, "car": true, "ce": true, "cela": true, "ces": true, "ceux": true,
