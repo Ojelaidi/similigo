@@ -1,5 +1,7 @@
 package similigo
 
+import "strings"
+
 type Option func(*SimilarityOptions)
 
 // SimilarityOptions represents optional settings for hybrid similarity calculation.
@@ -12,6 +14,7 @@ type SimilarityOptions struct {
 	WordSimWeight        float64
 	NgramSimWeight       float64
 	ContainmentSimWeight float64
+	CustomStopWords      map[string]bool
 }
 
 const (
@@ -27,6 +30,7 @@ func DefaultSimilarityOptions() *SimilarityOptions {
 		WordSimWeight:        DefaultWordSimWeight,
 		NgramSimWeight:       DefaultNgramSimWeight,
 		ContainmentSimWeight: DefaultContainmentSimWeight,
+		CustomStopWords:      make(map[string]bool),
 	}
 }
 
@@ -55,5 +59,19 @@ func WithNgramSimWeight(w float64) Option {
 func WithContainmentSimWeight(w float64) Option {
 	return func(opts *SimilarityOptions) {
 		opts.ContainmentSimWeight = w
+	}
+}
+
+// WithCustomStopWords allows users to add custom stop words by providing a list of words.
+func WithCustomStopWords(words []string) Option {
+	return func(opts *SimilarityOptions) {
+		if opts.CustomStopWords == nil {
+			opts.CustomStopWords = make(map[string]bool)
+		}
+
+		for _, word := range words {
+			normalizedWord := strings.ToLower(strings.TrimSpace(word))
+			opts.CustomStopWords[normalizedWord] = true
+		}
 	}
 }
